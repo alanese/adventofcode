@@ -1,5 +1,3 @@
-from typing import List
-
 def cell_number(row: int, col: int) -> int:
     diag = row+col-2
     return diag * (diag+1) // 2 + col
