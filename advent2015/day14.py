@@ -1,4 +1,4 @@
-from typing import List, NamedTuple
+from typing import NamedTuple
 
 class Reindeer(NamedTuple):
     name: str
@@ -28,15 +28,31 @@ def reindeer_movement(reindeer: Reindeer, time: int):
     else:
         return 0
 
-farthest: int = 0
-reindeer_list: List[Reindeer] = []
-with open("input-14.txt") as f:
-    for line in f:
-        reindeer = parse_line(line)
-        reindeer_list.append(reindeer)
 
-positions: List[int] = [0 for _ in reindeer_list]
-scores: List[int] = [0 for _ in reindeer_list]
+with open("input-14.txt") as f:
+    data = [line.strip() for line in f]
+
+#Part 1
+reindeer_list: list[Reindeer] = []
+for line in data:
+    reindeer = parse_line(line)
+    reindeer_list.append(reindeer)
+
+max_position: int = 0
+for reindeer in reindeer_list:
+    reindeer_position: int = location_after(reindeer, 2503)
+    if reindeer_position > max_position:
+        max_position = reindeer_position
+print(max_position)
+
+#Part 2
+reindeer_list: list[Reindeer] = []
+for line in data:
+    reindeer = parse_line(line)
+    reindeer_list.append(reindeer)
+
+positions: list[int] = [0 for _ in reindeer_list]
+scores: list[int] = [0 for _ in reindeer_list]
 
 for i in range(2503):
     max_position = 0
@@ -46,8 +62,6 @@ for i in range(2503):
     for p_index, position in enumerate(positions):
         if position == max_position:
             scores[p_index] += 1
-
-print(max(positions))
 
 print(max(scores))
     

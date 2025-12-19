@@ -1,11 +1,9 @@
-from typing import List
-
 VALID_CHARS = "abcdefghjkmnpqrstuvwxyz"
 def increment_char(char: str) -> str:
     index = (VALID_CHARS.index(char) + 1) % len(VALID_CHARS)
     return VALID_CHARS[index]
 
-def increment_list(chars: List[str]) -> List[str]:
+def increment_list(chars: list[str]) -> list[str]:
     if len(chars) == 0:
         return chars
     last = increment_char(chars[-1])
@@ -14,7 +12,7 @@ def increment_list(chars: List[str]) -> List[str]:
     else:
         return increment_list(chars[:-1]) + [last]
 
-def check_password(chars: List[str]) -> bool:
+def check_password(chars: list[str]) -> bool:
     pairs = set()
     for char in chars:
         if char not in VALID_CHARS:
@@ -34,11 +32,13 @@ def check_password(chars: List[str]) -> bool:
 with open("input-11.txt") as f:
     password = list(f.read())
 
+#Part 1
 while not check_password(password):
     password = increment_list(password)
 
 print("".join(password))
 
+#Part 2
 #------------------
 
 password = increment_list(password)

@@ -1,7 +1,4 @@
-from typing import List, Tuple, Dict
-
-
-def streaks(digits: str) -> List[Tuple[str, int]]:
+def streaks(digits: str) -> list[tuple[str, int]]:
     if len(digits) == 0:
         return []
     
@@ -20,25 +17,29 @@ def streaks(digits: str) -> List[Tuple[str, int]]:
     s.append((cur_char, cur_length))
     return s
 
-def streak_to_str(streak: Tuple[str, int], cache: Dict) -> str:
+def streak_to_str(streak: tuple[str, int], cache: dict) -> str:
     if streak not in cache:
         cache[streak] = str(streak[1]) + streak[0]
     return cache[streak]
 
-def lookandsay(digits: str, cache: Dict) -> str:
+def lookandsay(digits: str, cache: dict) -> str:
     return "".join([streak_to_str(streak, cache) for streak in streaks(digits)])
 
 with open("input-10.txt") as f:
-    digits = f.read()
+    data:str = f.read()
 
-cache = {}
+#Part 1
+cache: dict = {}
+new_digits: str = data
 for _ in range(40):
-    digits = lookandsay(digits, cache)
+    new_digits = lookandsay(new_digits, cache)
 
-print(len(digits))
+print(len(new_digits))
 
-#-------
-for _ in range(10):
-    digits = lookandsay(digits, cache)
+#Part 2
+cache = {}
+new_digits = data
+for _ in range(50):
+    new_digits = lookandsay(new_digits, cache)
 
-print(len(digits))
+print(len(new_digits))

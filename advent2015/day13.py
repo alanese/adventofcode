@@ -1,8 +1,7 @@
-from typing import Dict, Tuple, Set
 from itertools import permutations
 from collections import defaultdict
 
-def parse_line(line: str) -> Tuple[str, str, int]:
+def parse_line(line: str) -> tuple[str, str, int]:
     """Returns (p1, p2, val) meaning p1 would gain/lose val points by sitting next to p2"""
     line_split = line.strip()[:-1].split()
     p1 = line_split[0]
@@ -12,7 +11,7 @@ def parse_line(line: str) -> Tuple[str, str, int]:
         val = -val
     return p1, p2, val
 
-def arrangement_value(order: Tuple[str, ...], values: Dict[Tuple[str, str], int]) -> int:
+def arrangement_value(order: tuple[str, ...], values: dict[tuple[str, str], int]) -> int:
     value = 0
     for i in range(len(order)-1):
         value += values[(order[i], order[i+1])] + values[(order[i+1], order[i])]
@@ -20,15 +19,19 @@ def arrangement_value(order: Tuple[str, ...], values: Dict[Tuple[str, str], int]
     return value
 
 
-values: Dict[Tuple[str, str], int] = defaultdict(lambda: 0)
-people: Set[str] = set()
+
 
 
 with open("input-13.txt") as f:
-    for line in f:
-        p1, p2, val = parse_line(line)
-        values[(p1, p2)] = val
-        people.add(p1)
+    data: list[str] = [line.strip() for line in f]
+
+#Part 3
+values: dict[tuple[str, str], int] = defaultdict(lambda: 0)
+people: set[str] = set()
+for line in data:
+    p1, p2, val = parse_line(line)
+    values[(p1, p2)] = val
+    people.add(p1)
 
 max_happiness:int | None = None
 for order in permutations(people):
@@ -38,7 +41,14 @@ for order in permutations(people):
 
 print(max_happiness)
 
-#-------------
+#Part 2
+values: dict[tuple[str, str], int] = defaultdict(lambda: 0)
+people: set[str] = set()
+for line in data:
+    p1, p2, val = parse_line(line)
+    values[(p1, p2)] = val
+    people.add(p1)
+
 people.add("me")
 max_happiness = None
 for order in permutations(people):

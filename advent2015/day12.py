@@ -11,12 +11,6 @@ def get_value_p1(thing: Any) -> int:
     else:
         return 0
     
-with open("input-12.txt") as f:
-    data = json.loads(f.read())
-
-print(get_value_p1(data))
-
-#----------------------------
 def get_value_p2(thing: Any) -> int:
     if isinstance(thing, int):
         return thing
@@ -29,5 +23,15 @@ def get_value_p2(thing: Any) -> int:
             return sum([get_value_p2(k) + get_value_p2(v) for k,v in thing.items()])
     else:
         return 0
-    
-print(get_value_p2(data))
+
+
+with open("input-12.txt") as f:
+    data = f.read()
+
+#Part 1
+json_data = json.loads(data)
+print(get_value_p1(json_data))
+
+#Part 2
+json_data = json.loads(data)
+print(get_value_p2(json_data))
