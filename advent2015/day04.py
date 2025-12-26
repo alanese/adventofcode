@@ -18,6 +18,3 @@ print(find_zeroes(data, 5))
 
 #Part 2
 print(find_zeroes(data, 6))
-
-#-------
-#while True:

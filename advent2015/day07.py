@@ -60,14 +60,13 @@ def retrieve_value(wire: str, network: dict[str, Wire]) -> int:
     return network[wire].value
 
 with open("input-07.txt") as f:
-    data = [line.strip() for line in f]
+    data = [line.strip().split(" -> ") for line in f]
 
 
 #Part 1
 network = {}
 
 for line in data:
-    line = line.strip().split(" -> ")
     network[line[1]] = Wire(line[0], None)
 
 a_value = retrieve_value("a", network)
@@ -76,7 +75,6 @@ print(a_value)
 #Part 2
 network = {}
 for line in data:
-    line = line.strip().split(" -> ")
     network[line[1]] = Wire(line[0], None)
 network["b"].source = str(a_value)
 

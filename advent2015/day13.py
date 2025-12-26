@@ -19,20 +19,15 @@ def arrangement_value(order: tuple[str, ...], values: dict[tuple[str, str], int]
     return value
 
 
-
-
-
-with open("input-13.txt") as f:
-    data: list[str] = [line.strip() for line in f]
-
-#Part 3
 values: dict[tuple[str, str], int] = defaultdict(lambda: 0)
 people: set[str] = set()
-for line in data:
-    p1, p2, val = parse_line(line)
-    values[(p1, p2)] = val
-    people.add(p1)
+with open("input-13.txt") as f:
+    for line in f:
+        p1, p2, val = parse_line(line.strip())
+        values[(p1, p2)] = val
+        people.add(p1)
 
+#Part 1
 max_happiness:int | None = None
 for order in permutations(people):
     happiness = arrangement_value(order, values)
@@ -42,13 +37,6 @@ for order in permutations(people):
 print(max_happiness)
 
 #Part 2
-values: dict[tuple[str, str], int] = defaultdict(lambda: 0)
-people: set[str] = set()
-for line in data:
-    p1, p2, val = parse_line(line)
-    values[(p1, p2)] = val
-    people.add(p1)
-
 people.add("me")
 max_happiness = None
 for order in permutations(people):

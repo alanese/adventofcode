@@ -1,4 +1,4 @@
-from typing import List, NamedTuple
+from typing import NamedTuple
 
 class Ingredient(NamedTuple):
     capacity: int
@@ -15,7 +15,7 @@ def partitions(n: int, length: int):
             for partition in partitions(n-i, length-1):
                 yield [i] + partition
 
-def cookie_value(ingredients: List[Ingredient], counts: List[int]) -> int:
+def cookie_value(ingredients: list[Ingredient], counts: list[int]) -> int:
     if len(ingredients) != len(counts):
         return -1
     capacity: int = 0
@@ -31,7 +31,7 @@ def cookie_value(ingredients: List[Ingredient], counts: List[int]) -> int:
 
     return max(capacity, 0) * max(durability, 0) * max(flavor, 0) * max(texture, 0)
 
-def calorie_count(ingredients: List[Ingredient], counts: List[int]) -> int:
+def calorie_count(ingredients: list[Ingredient], counts: list[int]) -> int:
     if len(ingredients) != len(counts):
         return -1
     
@@ -39,7 +39,7 @@ def calorie_count(ingredients: List[Ingredient], counts: List[int]) -> int:
     
 
 def parse_line(line: str) -> Ingredient:
-    line_split:List[str] = line.strip().split()
+    line_split:list[str] = line.strip().split()
     ingredient = Ingredient(capacity=int(line_split[2][:-1]),
                             durability=int(line_split[4][:-1]),
                             flavor=int(line_split[6][:-1]),
@@ -48,15 +48,21 @@ def parse_line(line: str) -> Ingredient:
     return ingredient
 
 with open("input-15.txt") as f:
-    ingredients: List[Ingredient] = [parse_line(line) for line in f]
+    ingredients: list[Ingredient] = [parse_line(line) for line in f]
 
+#Part 1
 max_score = 0
-max_500cal_score = 0
+
 for partition in partitions(100, len(ingredients)):
     score = cookie_value(ingredients, partition)
     max_score = max(score, max_score)
-    if calorie_count(ingredients, partition) == 500:
-        max_500cal_score = max(max_500cal_score, score)
 
 print(max_score)
+
+#Part 2
+max_500cal_score = 0
+for partition in partitions(100, len(ingredients)):
+    score = cookie_value(ingredients, partition)
+    if calorie_count(ingredients, partition) == 500:
+        max_500cal_score = max(max_500cal_score, score)
 print(max_500cal_score)

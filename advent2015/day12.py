@@ -26,12 +26,11 @@ def get_value_p2(thing: Any) -> int:
 
 
 with open("input-12.txt") as f:
-    data = f.read()
+    json_data = json.loads(f.read())
+
 
 #Part 1
-json_data = json.loads(data)
 print(get_value_p1(json_data))
 
 #Part 2
-json_data = json.loads(data)
 print(get_value_p2(json_data))

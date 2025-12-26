@@ -39,8 +39,6 @@ while not check_password(password):
 print("".join(password))
 
 #Part 2
-#------------------
-
 password = increment_list(password)
 while not check_password(password):
     password = increment_list(password)

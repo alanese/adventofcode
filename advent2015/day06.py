@@ -23,13 +23,14 @@ def parse_command(command: str) -> tuple[str, tuple[int, ...], tuple[int, ...]]:
 
 
 with open("input-06.txt") as f:
-    data = [line.strip() for line in f]
+    data: list[tuple[str, tuple[int, ...], tuple[int, ...]]] = [parse_command(line.strip()) for line in f]
+
+
 
 #Part 1
 grid_p1 = defaultdict(lambda: False)
 
-for line in data:
-    cmd, start, end = parse_command(line.strip())
+for cmd, start, end in data:
     match cmd:
         case "on":
             cmd_func_1 = lambda x: True
@@ -38,7 +39,7 @@ for line in data:
         case "toggle":
             cmd_func_1 = lambda x: not x
         case _:
-            raise Exception(f"Invalid line: {line}")
+            raise Exception(f"Invalid command: {cmd}")
     for x in range(start[0], end[0]+1):
         for y in range(start[1], end[1]+1):
             grid_p1[(x,y)] = cmd_func_1(grid_p1[(x,y)])
@@ -53,8 +54,7 @@ print(on_count)
 #Part 2
 grid_p2 = defaultdict(lambda: 0)
 
-for line in data:
-    cmd, start, end = parse_command(line.strip())
+for cmd, start, end in data:
     match cmd:
         case "on":
             cmd_func_2 = lambda x: x+1
@@ -63,7 +63,7 @@ for line in data:
         case "toggle":
             cmd_func_2 = lambda x: x+2
         case _:
-            raise Exception(f"Invalid line: {line}")
+            raise Exception(f"Invalid command: {cmd}")
     for x in range(start[0], end[0]+1):
         for y in range(start[1], end[1]+1):
             grid_p2[(x,y)] = cmd_func_2(grid_p2[(x,y)])
