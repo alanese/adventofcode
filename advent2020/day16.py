@@ -64,5 +64,4 @@ for _ in range(len(field_possibilities)):
                     field_possibilities[j].discard(elt)
 
 departure_fields: list[int] = [i for i in range(len(field_possibilities)) if list(field_possibilities[i])[0].startswith("departure")]
-print(departure_fields)
 print(prod([my_ticket[i] for i in departure_fields]))
