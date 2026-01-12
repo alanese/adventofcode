@@ -34,23 +34,21 @@ def parse_rules(line: str) -> list[Rule]:
             res += Rule.binarize(source, output.split())
     return res
 
-def match(target: str, start: str, rules: dict[str, list[Rule]], depth: int = 0, seen: dict[tuple[str, str], bool] = {}) -> bool:
+def match(target: str, start: str, rules: dict[str, list[Rule]], seen: dict[tuple[str, str], bool] = {}) -> bool:
     if (start,target) in seen:
         return seen[(start,target)]
     if len(target) == 0:
         return False
     else:
         for rule in rules[start]:
-            #print(f"{' '*depth}attempting rule {rule}")
             if len(rule.output) == 1:
-                if rule.output[0] == target or match(target, rule.output[0], rules, depth+1, seen):
+                if rule.output[0] == target or match(target, rule.output[0], rules, seen):
                     return True
             else:
                 for divider in range(1, len(target)):
                     first: str = target[:divider]
                     second: str = target[divider:]
-                    #print(f"{' '*depth}Splitting {rule.output[0]} -> {first}, {rule.output[0]} -> {second}")
-                    if match(first, rule.output[0], rules, depth+1, seen) and match(second, rule.output[1], rules, depth+1, seen):
+                    if match(first, rule.output[0], rules, seen) and match(second, rule.output[1], rules, seen):
                         seen[(start, target)] = True
                         return True
         seen[(start, target)] = False
@@ -73,8 +71,6 @@ for i, message in enumerate(messages):
         match_count += 1
 print(match_count)
 
-print(rules['8'])
-print(rules['11'])
 #Part 2
 rules['8'] = parse_rules('8: 42 | 42 8')
 new_11 = parse_rules('11: 42 31 | 42 11 31')
