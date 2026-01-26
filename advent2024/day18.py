@@ -21,9 +21,6 @@ def shortest_path(start: T, end: T, edges: dict[T, list[T]]) -> int:
                     heapq.heappush(to_visit, (next_distance+1, neighbor))
     return visited.get(end, -1)
 
-
-
-
 MAX_X: int = 70
 MAX_Y: int = 70
 BLOCK_COUNT: int = 1024
