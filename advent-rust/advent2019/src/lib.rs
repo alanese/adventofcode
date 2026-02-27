@@ -7,15 +7,15 @@ pub struct Intcode {
 }
 
 impl Intcode {
-    fn get_ops(&self, num: isize, modes: isize) -> Vec<isize> {
-        let mut ops: Vec<isize> = Vec::new();
+    fn get_ops(&self, num: usize, modes: isize) -> Vec<usize> {
+        let mut ops: Vec<usize> = Vec::new();
         let mut next_mode = modes;
 
         for offset in 1..=num {
             if next_mode % 10 == 0 {
-                ops.push(self.program[self.pc as usize + offset as usize]);
+                ops.push(self.program[self.pc as usize + offset as usize] as usize);
             } else {
-                ops.push(self.pc + offset);
+                ops.push(self.pc as usize + offset);
             }
             next_mode /= 10;
         }
@@ -37,32 +37,32 @@ impl Intcode {
             1 => {
                 //Add
                 let ops = self.get_ops(3, modes);
-                self.program[ops[2] as usize] = self.program[ops[0] as usize] + self.program[ops[1] as usize];
+                self.program[ops[2]] = self.program[ops[0]] + self.program[ops[1]];
                 self.pc += 4;
             }
             2 => {
                 //Multiply
                 let ops = self.get_ops(3, modes);
-                self.program[ops[2] as usize] = self.program[ops[0] as usize] * self.program[ops[1] as usize];
+                self.program[ops[2]] = self.program[ops[0]] * self.program[ops[1]];
                 self.pc += 4;
             }
             3 => {
                 //Input
                 let ops = self.get_ops(1, modes);
-                self.program[ops[0] as usize] = self.input.remove(0);
+                self.program[ops[0]] = self.input.remove(0);
                 self.pc += 2;
             }
             4 => {
                 //Output
                 let ops = self.get_ops(1, modes);
-                self.output.push(self.program[ops[0] as usize]);
+                self.output.push(self.program[ops[0]]);
                 self.pc += 2;
             }
             5 => {
                 //jump-if-true
                 let ops = self.get_ops(2, modes);
-                if self.program[ops[0] as usize] != 0 {
-                    self.pc = self.program[ops[1] as usize];
+                if self.program[ops[0]] != 0 {
+                    self.pc = self.program[ops[1]];
                 } else {
                     self.pc += 3;
                 }
@@ -70,8 +70,8 @@ impl Intcode {
             6 => {
                 //jump-if-false
                 let ops = self.get_ops(2, modes);
-                if self.program[ops[0] as usize] == 0 {
-                    self.pc = self.program[ops[1] as usize];
+                if self.program[ops[0]] == 0 {
+                    self.pc = self.program[ops[1]];
                 } else {
                     self.pc += 3;
                 }
@@ -79,8 +79,8 @@ impl Intcode {
             7 => {
                 //less than
                 let ops = self.get_ops(3, modes);
-                self.program[ops[2] as usize] = {
-                    if self.program[ops[0] as usize] < self.program[ops[1] as usize] {
+                self.program[ops[2]] = {
+                    if self.program[ops[0]] < self.program[ops[1]] {
                         1
                     } else {
                         0
