@@ -3,4 +3,6 @@ name = "advent2019"
 version = "0.1.0"
 edition = "2024"
 
-[dependencies]
+[lib]
+name = "advent2019"
+path = "src/lib.rs"
