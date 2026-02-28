@@ -1,5 +1,5 @@
 use std::fs;
-use advent2019::Intcode;
+use advent2019::{Intcode, Status};
 
 fn create_program(ops: &Vec<isize>, v1: isize, v2: isize) -> Intcode {
     let mut new_ops = ops.clone();
@@ -7,7 +7,7 @@ fn create_program(ops: &Vec<isize>, v1: isize, v2: isize) -> Intcode {
     new_ops[2] = v2;
     return Intcode{
         program: new_ops,
-        running: true,
+        status: Status::RUNNING,
         pc: 0,
         output: Vec::new(),
         input: Vec::new()

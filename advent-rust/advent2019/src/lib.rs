@@ -1,6 +1,13 @@
+#[derive(PartialEq)]
+pub enum Status {
+    RUNNING,
+    BLOCKED,
+    HALTED
+}
+
 pub struct Intcode {
     pub program: Vec<isize>,
-    pub running: bool,
+    pub status: Status,
     pub pc: isize,
     pub output: Vec<isize>,
     pub input: Vec<isize>
@@ -25,10 +32,10 @@ impl Intcode {
     pub fn step(&mut self) {
         //println!("PC: {}, state: {:?}", self.pc, self.program);
         if self.pc < 0 || self.pc >= self.program.len() as isize || self.program[self.pc as usize] == 99 {
-            self.running = false;
+            self.status = Status::HALTED;
         }
-        if !self.running {
-            return
+        if self.status != Status::RUNNING {
+            return;
         }
 
         let opcode = self.program[self.pc as usize] % 100;
@@ -49,6 +56,10 @@ impl Intcode {
             3 => {
                 //Input
                 let ops = self.get_ops(1, modes);
+                if self.input.len() == 0 {
+                    self.status = Status::BLOCKED;
+                    return;
+                }
                 self.program[ops[0]] = self.input.remove(0);
                 self.pc += 2;
             }
@@ -92,7 +103,7 @@ impl Intcode {
                 //equals
                 let ops = self.get_ops(3, modes);
                 self.program[ops[2] as usize] = {
-                    if self.program[ops[0] as usize] == self.program[ops[1] as usize] {
+                    if self.program[ops[0]] == self.program[ops[1]] {
                         1
                     } else {
                         0
@@ -107,7 +118,7 @@ impl Intcode {
     }
 
     pub fn run(&mut self) {
-        while self.running {
+        while self.status == Status::RUNNING {
             self.step();
         }
     }

@@ -1,5 +1,5 @@
 use std::fs;
-use advent2019::Intcode;
+use advent2019::{Intcode, Status};
 
 fn main() {
     //Read and parse input file
@@ -13,7 +13,7 @@ fn main() {
     //Part 1
     let mut machine = Intcode {
         program: program.clone(),
-        running: true,
+        status: Status::RUNNING,
         pc: 0,
         output: Vec::new(),
         input: vec![1]
@@ -26,7 +26,7 @@ fn main() {
     //Part 2
     machine = Intcode {
         program: program,
-        running: true,
+        status: Status::RUNNING,
         pc: 0,
         output: Vec::new(),
         input: vec![5]

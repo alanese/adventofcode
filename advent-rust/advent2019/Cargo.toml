@@ -6,3 +6,6 @@ edition = "2024"
 [lib]
 name = "advent2019"
 path = "src/lib.rs"
+
+[dependencies]
+itertools = "0.14.0"
