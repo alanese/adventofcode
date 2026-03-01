@@ -1,21 +1,23 @@
 use std::fs;
 use advent2019::{Intcode, Status};
+use std::collections::HashMap;
 use itertools::Itertools;
 
-fn get_signal(program: &Vec<isize>, phase: isize, input: isize) -> isize {
+fn get_signal(program: &HashMap<i64, i64>, phase: i64, input: i64) -> i64 {
     let mut machine = Intcode {
         program: program.clone(),
         status: Status::RUNNING,
         pc: 0,
         output: Vec::new(),
-        input: vec![phase, input]
+        input: vec![phase, input],
+        relative_base: 0
     };
 
     machine.run();
     return *machine.output.last().unwrap();
 }
 
-fn run_p2(program: &Vec<isize>, phases: &Vec<isize>, input: isize) -> isize {
+fn run_p2(program: &HashMap<i64,i64>, phases: &Vec<i64>, input: i64) -> i64 {
     let mut amp_a = Intcode::create(program.clone());
     amp_a.input.push(phases[0]);
     amp_a.input.push(input);
@@ -28,7 +30,7 @@ fn run_p2(program: &Vec<isize>, phases: &Vec<isize>, input: isize) -> isize {
     let mut amp_e = Intcode::create(program.clone());
     amp_e.input.push(phases[4]);
 
-    let mut final_output: isize = 0;
+    let mut final_output: i64 = 0;
 
     while amp_a.status != Status::HALTED && amp_b.status != Status::HALTED && amp_c.status != Status::HALTED
         && amp_d.status != Status::HALTED && amp_e.status != Status::HALTED {
@@ -64,14 +66,14 @@ fn main() {
     //Read and parse input data
     let data = fs::read_to_string("input-07.txt").expect("Unable to read file");
 
-    let mut program: Vec<isize> = Vec::new();
+    let mut program: HashMap<i64, i64> = HashMap::new();
 
-    for num in data.split(",") {
-        program.push(num.parse().expect("Malformed input"));
+    for (i, num) in data.split(",").enumerate() {
+        program.insert(i as i64, num.parse().expect("Malformed input"));
     }
 
     //Part 1
-    let mut max_out: isize = 0;
+    let mut max_out: i64 = 0;
 
     for phases in (0..=4).permutations(5) {
         let a_out = get_signal(&program, phases[0], 0);
