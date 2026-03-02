@@ -4,7 +4,7 @@ use std::collections::HashMap;
 use itertools::Itertools;
 
 fn get_signal(program: &HashMap<i64, i64>, phase: i64, input: i64) -> i64 {
-    let mut machine = Intcode::create(program.clone());
+    let mut machine = Intcode::new(program.clone());
     machine.push_input(phase);
     machine.push_input(input);
     /*
@@ -23,16 +23,16 @@ fn get_signal(program: &HashMap<i64, i64>, phase: i64, input: i64) -> i64 {
 }
 
 fn run_p2(program: &HashMap<i64,i64>, phases: &Vec<i64>, input: i64) -> i64 {
-    let mut amp_a = Intcode::create(program.clone());
+    let mut amp_a = Intcode::new(program.clone());
     amp_a.push_input(phases[0]);
     amp_a.push_input(input);
-    let mut amp_b = Intcode::create(program.clone());
+    let mut amp_b = Intcode::new(program.clone());
     amp_b.push_input(phases[1]);
-    let mut amp_c = Intcode::create(program.clone());
+    let mut amp_c = Intcode::new(program.clone());
     amp_c.push_input(phases[2]);
-    let mut amp_d = Intcode::create(program.clone());
+    let mut amp_d = Intcode::new(program.clone());
     amp_d.push_input(phases[3]);
-    let mut amp_e = Intcode::create(program.clone());
+    let mut amp_e = Intcode::new(program.clone());
     amp_e.push_input(phases[4]);
 
     let mut final_output: i64 = 0;

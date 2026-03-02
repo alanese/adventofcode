@@ -18,7 +18,7 @@ pub struct Intcode {
 
 impl Intcode {
     //Create an Intcode object with the specified program
-    pub fn create(program: HashMap<i64, i64>) -> Intcode {
+    pub fn new(program: HashMap<i64, i64>) -> Intcode {
         return Intcode{
             program: program,
             status: Status::Running,

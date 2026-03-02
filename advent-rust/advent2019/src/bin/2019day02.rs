@@ -7,7 +7,7 @@ fn create_program(ops: &HashMap<i64, i64>, v1: i64, v2: i64) -> Intcode {
     new_ops.insert(1, v1);
     new_ops.insert(2, v2);
 
-    return Intcode::create(new_ops);
+    return Intcode::new(new_ops);
     /*
     return Intcode{
         program: new_ops,

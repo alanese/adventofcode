@@ -13,7 +13,7 @@ fn main() {
     }
 
     //Part 1
-    let mut machine = Intcode::create(program.clone());
+    let mut machine = Intcode::new(program.clone());
     machine.push_input(1);
 
     machine.run();
@@ -21,7 +21,7 @@ fn main() {
     println!("{:?}", machine.pop_output().unwrap());
 
     //Part 2
-    machine = Intcode::create(program.clone());
+    machine = Intcode::new(program.clone());
     machine.push_input(2);
 
     machine.run();
