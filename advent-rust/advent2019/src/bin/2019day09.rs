@@ -1,6 +1,6 @@
 use std::fs;
 use std::collections::HashMap;
-use advent2019::{Intcode, Status};
+use advent2019::Intcode;
 
 fn main() {
     //Read and parse data
@@ -13,29 +13,18 @@ fn main() {
     }
 
     //Part 1
-    let mut machine = Intcode{
-        program: program.clone(),
-        status: Status::RUNNING,
-        pc: 0,
-        output: Vec::new(),
-        input: vec![1],
-        relative_base: 0
-    };
+    let mut machine = Intcode::create(program.clone());
+    machine.push_input(1);
 
     machine.run();
 
-    println!("{:?}", machine.output);
+    println!("{:?}", machine.pop_output().unwrap());
 
-    machine = Intcode {
-        program: program.clone(),
-        status: Status::RUNNING,
-        pc: 0,
-        output: Vec::new(),
-        input: vec![2],
-        relative_base: 0
-    };
+    //Part 2
+    machine = Intcode::create(program.clone());
+    machine.push_input(2);
 
     machine.run();
 
-    println!("{:?}", machine.output);
+    println!("{:?}", machine.pop_output().unwrap());
 }

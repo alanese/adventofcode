@@ -4,58 +4,63 @@ use std::collections::HashMap;
 use itertools::Itertools;
 
 fn get_signal(program: &HashMap<i64, i64>, phase: i64, input: i64) -> i64 {
+    let mut machine = Intcode::create(program.clone());
+    machine.push_input(phase);
+    machine.push_input(input);
+    /*
     let mut machine = Intcode {
         program: program.clone(),
-        status: Status::RUNNING,
+        status: Status::Running,
         pc: 0,
         output: Vec::new(),
         input: vec![phase, input],
         relative_base: 0
     };
+    */
 
     machine.run();
-    return *machine.output.last().unwrap();
+    return machine.pop_output().unwrap();
 }
 
 fn run_p2(program: &HashMap<i64,i64>, phases: &Vec<i64>, input: i64) -> i64 {
     let mut amp_a = Intcode::create(program.clone());
-    amp_a.input.push(phases[0]);
-    amp_a.input.push(input);
+    amp_a.push_input(phases[0]);
+    amp_a.push_input(input);
     let mut amp_b = Intcode::create(program.clone());
-    amp_b.input.push(phases[1]);
+    amp_b.push_input(phases[1]);
     let mut amp_c = Intcode::create(program.clone());
-    amp_c.input.push(phases[2]);
+    amp_c.push_input(phases[2]);
     let mut amp_d = Intcode::create(program.clone());
-    amp_d.input.push(phases[3]);
+    amp_d.push_input(phases[3]);
     let mut amp_e = Intcode::create(program.clone());
-    amp_e.input.push(phases[4]);
+    amp_e.push_input(phases[4]);
 
     let mut final_output: i64 = 0;
 
-    while amp_a.status != Status::HALTED && amp_b.status != Status::HALTED && amp_c.status != Status::HALTED
-        && amp_d.status != Status::HALTED && amp_e.status != Status::HALTED {
+    while amp_a.get_status() != Status::Halted && amp_b.get_status() != Status::Halted && amp_c.get_status() != Status::Halted
+        && amp_d.get_status() != Status::Halted && amp_e.get_status() != Status::Halted {
         amp_a.run();
-        while amp_a.output.len() != 0 {
-            amp_b.input.push(amp_a.output.remove(0));
+        while amp_a.has_output() {
+            amp_b.push_input(amp_a.pop_output().unwrap());
         }
         amp_b.run();
-        while amp_b.output.len() != 0 {
-            amp_c.input.push(amp_b.output.remove(0));
+        while amp_b.has_output() {
+            amp_c.push_input(amp_b.pop_output().unwrap());
         }
         amp_c.run();
-        while amp_c.output.len() != 0 {
-            amp_d.input.push(amp_c.output.remove(0));
+        while amp_c.has_output() {
+            amp_d.push_input(amp_c.pop_output().unwrap());
         }
         amp_d.run();
-        while amp_d.output.len() != 0 {
-            amp_e.input.push(amp_d.output.remove(0));
+        while amp_d.has_output() {
+            amp_e.push_input(amp_d.pop_output().unwrap());
         }
         amp_e.run();
-        if amp_e.output.len() != 0 {
-            final_output = *amp_e.output.last().unwrap();
+        if amp_e.has_output() {
+            final_output = amp_e.last_output().unwrap();
         }
-        while amp_e.output.len() != 0 {
-            amp_a.input.push(amp_e.output.remove(0));
+        while amp_e.has_output() {
+            amp_a.push_input(amp_e.pop_output().unwrap());
         }
     }
 
