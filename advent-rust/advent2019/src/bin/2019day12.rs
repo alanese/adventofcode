@@ -118,13 +118,10 @@ fn main() {
     
     let mut moons_copy = moons.clone();
 
-    for step in 0..1000 {
+    for _ in 0..1000 {
         update_moons(&mut moons_copy);
-        if step%100 == 0 {
-            println!("Step {} : {moons_copy:?}", step+1);
-        }
     }
-    //println!("{moons_copy:?}");
+
     let mut total = 0;
     for moon in moons_copy {
         total += moon.get_energy();
