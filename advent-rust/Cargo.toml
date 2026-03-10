@@ -1,3 +1,3 @@
 [workspace]
-members = ["advent2015", "advent2019", "advent2023"]
+members = ["advent2015", "advent2019", "advent2020", "advent2023"]
 resolver="3"
