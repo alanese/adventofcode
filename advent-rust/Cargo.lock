@@ -20,6 +20,9 @@ dependencies = [
 [[package]]
 name = "advent2020"
 version = "0.1.0"
+dependencies = [
+ "regex",
+]
 
 [[package]]
 name = "advent2023"
